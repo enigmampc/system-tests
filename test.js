@@ -17,7 +17,7 @@ const dockerComposeCwd = path.resolve(__dirname, "docker-compose");
 describe("System tests", function() {
   describe("State sync", function() {
     before(async function() {
-      this.timeout(5 * 60 * 1000);
+      this.timeout(15 * 60 * 1000);
 
       logger.log("Restarting the network...");
 
@@ -40,7 +40,7 @@ describe("System tests", function() {
     });
 
     it("Worker joins and successfully syncs when there is already a state", async function() {
-      this.timeout(5 * 60 * 1000);
+      this.timeout(15 * 60 * 1000);
 
       logger.log("Deploying a secret contract to create state in the network...");
       await exec(`docker exec docker-compose_client_1 yarn test --runInBand deploy_calc`);
