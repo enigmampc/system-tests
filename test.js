@@ -45,18 +45,11 @@ describe("System tests", function() {
       logger.log("Deploying a secret contract to create state in the network...");
       await exec(`docker exec docker-compose_client_1 yarn test --runInBand deploy_calc`);
 
-      logger.log("Adding another worker to the network");
+      logger.log("Adding another worker to the network...");
       await exec(`cd "${dockerComposeCwd}" && docker-compose up -d --scale worker=2`);
 
       logger.log("Waitng for the new worker to sync...");
-      while (true) {
-        try {
-          await exec(`docker logs docker-compose_worker_2 | grep -iq 'success syncing pipeline'`);
-          return;
-        } catch (e) {
-          await sleep(1000);
-        }
-      }
+      await exec(`docker logs --tail 1000 -f docker-compose_worker_2 | grep -i -m 1 'success syncing pipeline'`);
     });
   });
 });
