@@ -17,43 +17,52 @@ const dockerCwd = path.resolve(__dirname, "docker-compose");
 describe("System tests", function() {
   describe("State sync", function() {
     before(async function() {
-      this.timeout(180 * 1000);
+      this.timeout(5 * 60 * 1000);
 
-      logger.log("Restarting the network");
+      logger.log("Restarting the network...");
 
       await killNetwork();
       await initBasicNetwork();
 
-      logger.log("Waiting for at least 1 worker to register with km");
+      logger.success("Done");
+
+      logger.log("Waiting for at least 1 worker to register with km...");
 
       while ((await countRegisteredWorkers()) < 1) {
         await sleep(1000);
       }
+
+      logger.success("Done");
     });
 
     after(async function() {
-      this.timeout(180 * 1000);
+      this.timeout(5 * 60 * 1000);
 
-      logger.log("Shuting down the network");
+      logger.log("Shuting down the network...");
 
       await killNetwork();
+
+      logger.success("Done");
     });
 
     it("Worker joins and successfully syncs when there is already a state", async function() {
-      this.timeout(180 * 1000);
+      this.timeout(5 * 60 * 1000);
 
-      logger.log("Deploying a secret contract to create state in the network");
+      logger.log("Deploying a secret contract to create state in the network...");
       await exec(`docker exec docker-compose_client_1 yarn test --runInBand deploy_calc`);
+      logger.success("Done");
 
       logger.log("Adding another worker to the network");
       await exec(`cd "${dockerCwd}" && docker-compose up -d --scale worker=2`);
+      logger.success("Done");
 
+      logger.log("Waitng for the new worker to sync...");
       while (true) {
         try {
           await exec(`docker logs docker-compose_worker_2 | grep -iq 'success syncing pipeline'`);
+          logger.success("Done");
           return;
         } catch (e) {
-          logger.log("Waiting for the new worker to sync");
           await sleep(1000);
         }
       }
