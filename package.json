@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "dependencies": {
     "axios": "^0.19.2",
