@@ -12,7 +12,7 @@ const logger = require("mocha-logger");
 // logger.success("This is .success()");
 // logger.error("This is .error()");
 
-const dockerCwd = path.resolve(__dirname, "docker-compose");
+const dockerComposeCwd = path.resolve(__dirname, "docker-compose");
 
 describe("System tests", function() {
   describe("State sync", function() {
@@ -24,15 +24,11 @@ describe("System tests", function() {
       await killNetwork();
       await initBasicNetwork();
 
-      logger.success("Done");
-
       logger.log("Waiting for at least 1 worker to register with km...");
 
       while ((await countRegisteredWorkers()) < 1) {
         await sleep(1000);
       }
-
-      logger.success("Done");
     });
 
     after(async function() {
@@ -41,8 +37,6 @@ describe("System tests", function() {
       logger.log("Shuting down the network...");
 
       await killNetwork();
-
-      logger.success("Done");
     });
 
     it("Worker joins and successfully syncs when there is already a state", async function() {
@@ -50,17 +44,14 @@ describe("System tests", function() {
 
       logger.log("Deploying a secret contract to create state in the network...");
       await exec(`docker exec docker-compose_client_1 yarn test --runInBand deploy_calc`);
-      logger.success("Done");
 
       logger.log("Adding another worker to the network");
-      await exec(`cd "${dockerCwd}" && docker-compose up -d --scale worker=2`);
-      logger.success("Done");
+      await exec(`cd "${dockerComposeCwd}" && docker-compose up -d --scale worker=2`);
 
       logger.log("Waitng for the new worker to sync...");
       while (true) {
         try {
           await exec(`docker logs docker-compose_worker_2 | grep -iq 'success syncing pipeline'`);
-          logger.success("Done");
           return;
         } catch (e) {
           await sleep(1000);

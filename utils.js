@@ -4,14 +4,14 @@ const { promisify } = require("util");
 const exec = promisify(require("child_process").exec);
 const path = require("path");
 
-const dockerCwd = path.resolve(__dirname, "docker-compose");
+const dockerComposeCwd = path.resolve(__dirname, "docker-compose");
 
 module.exports.initBasicNetwork = async function() {
-  await exec(`cd "${dockerCwd}" && docker-compose up -d`);
+  await exec(`cd "${dockerComposeCwd}" && docker-compose up -d`);
 };
 
 module.exports.killNetwork = async function() {
-  await exec(`cd "${dockerCwd}" && docker-compose down`);
+  await exec(`cd "${dockerComposeCwd}" && docker-compose down`);
 };
 
 module.exports.countRegisteredWorkers = async function() {
