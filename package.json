@@ -3,6 +3,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "mocha": "^7.0.0"
+    "axios": "^0.19.2",
+    "mocha": "^7.0.0",
+    "mocha-logger": "^1.0.6"
   }
 }
