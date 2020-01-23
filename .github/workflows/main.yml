@@ -1,6 +1,9 @@
 name: System Tests
 
-on: [push]
+on:
+  push
+  schedule:
+      - cron: '*/15 * * * *' # Every 15 minutes
 
 jobs:
   test:
