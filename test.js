@@ -3,6 +3,7 @@ const { initBasicNetwork, killNetwork, countRegisteredWorkers, sleep } = require
 
 const { promisify } = require("util");
 const exec = promisify(require("child_process").exec);
+const { spawn } = require("child_process");
 const path = require("path");
 
 const logger = require("mocha-logger");
@@ -47,6 +48,10 @@ describe("System tests", function() {
 
       logger.log("Adding another worker to the network...");
       await exec(`cd "${dockerComposeCwd}" && docker-compose up -d --scale worker=2`);
+
+      spawn("docker", ["logs", "--tail", "1000", "-f", "docker-compose_worker_2"]).stdout.on("data", data =>
+        console.log(data.toString())
+      );
 
       logger.log("Waitng for the new worker to sync...");
       await exec(`docker logs --tail 1000 -f docker-compose_worker_2 | grep -i -m 1 'success syncing pipeline'`);

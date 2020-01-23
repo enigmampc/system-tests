@@ -1,7 +1,7 @@
 const axios = require("axios");
-const { spawn } = require("child_process");
 const { promisify } = require("util");
 const exec = promisify(require("child_process").exec);
+const { spawn } = require("child_process");
 const path = require("path");
 
 const dockerComposeCwd = path.resolve(__dirname, "docker-compose");
