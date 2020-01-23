@@ -1,4 +1,4 @@
-System tests for the Enigma protocl.
+System tests for the Enigma protocol.
 
 [![Build Status](https://github.com/enigmampc/system-tests/workflows/System%20Tests/badge.svg)](https://github.com/enigmampc/system-tests/actions)
 
