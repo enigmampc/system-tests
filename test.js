@@ -51,7 +51,7 @@ describe("System tests", function() {
 
       logger.log("Waitng for the new worker to sync...");
       await exec(`docker logs --tail 1000 -f docker-compose_worker_2 | 
-                    grep -Pi -m 1 'success syncing pipeline|\[SYNC\] finished successfully`);
+                    grep -Pi -m 1 'success syncing pipeline|\[SYNC\] finished successfully'`);
     });
   });
 });
