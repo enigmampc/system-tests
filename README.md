@@ -13,9 +13,9 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
+Then from inside this repo:
+
 ```bash
-git clone https://github.com/enigmampc/system-tests.git
-cd system-tests
 yarn install
 yarn test
 ```
